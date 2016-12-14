@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width" />
+	<title>Bilibili Captcha</title>
+	<style type="text/css">
+body {margin: 0; padding:0;}
+img {border: none;}
+
+.dialog {
+	box-sizing: border-box;
+	width: 300px;
+	margin: 50px auto;
+	padding: 10px;
+	text-align: center;
+	box-shadow: 0 0 30px #ccc;
+	-webkit-box-shadow: 0 0 10px #ccc;
+	border-radius: 10px;
+	-webkit-border-radius: 5px;
+}
+.dialog select, .dialog button {
+	width: 100px;
+	margin: 10px 0;
+}
+
+	</style>
+</head>
+
+<body>
+<div class="dialog">
+	<select onchange="changeImage(this)">
+		<option value="01.jpg" selected>1</option>
+		<option value="02.jpg">2</option>
+		<option value="03.jpg">3</option>
+		<option value="04.jpg">4</option>
+		<option value="05.jpg">5</option>
+		<option value="06.jpg">6</option>
+	</select>
+	<br />
+	<img src="images/01.jpg" id="captcha" />
+	<br />
+	<button type="button" onclick="analysis()">识别</button>
+</div>
+
+<script type="text/javascript" src="../js/bilibili-captcha.js"></script>
+<script type="text/javascript">
+var captcha = document.getElementById("captcha");
+var bilibiliCaptcha = BilibiliCaptcha(captcha);
+
+function changeImage(element) {
+	captcha.src = "images/" + element.value;
+}
+
+function analysis() {
+	var result = bilibiliCaptcha.analysis();
+	alert("识别结果: " + result.output + "\n计算结果: " + result.compute);
+}
+</script>
+</body>
+</html>
