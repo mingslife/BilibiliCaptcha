@@ -1,4 +1,7 @@
 (function(window) {
+	var WIDTH = 120;
+	var HEIGHT = 40;
+
 	var CHAR_1 = "81c000008fc00000ffffffffffffffffffffffffffffffffffffffff";
 	var CHAR_2 = "bfe0000fffe0003fffe000ffffe001ffffe007fff8001ffff8003feff800ff8ff801ff0ff807fc0ff81ff00fffffe00fffff800fffff000ffffc000fbff8000f";
 	var CHAR_3 = "bfe003feffe003ffffe003ffffe003ffffe003fff800000ff803800ff803800ff807c00ff80fe00ff81ff00ffffffffffffefffffffc7ffffffc7fffbff83ffe";
@@ -18,8 +21,10 @@
 		var canvas = document.createElement("canvas");
 		var ctx = canvas.getContext("2d");
 		var analysis = function() {
-			var width = captcha.width;
-			var height = captcha.height;
+			// var width = captcha.width;
+			// var height = captcha.height;
+			var width = WIDTH;
+			var height = HEIGHT;
 			ctx.drawImage(captcha, 0, 0);
 			var imageData = ctx.getImageData(0, 0, width, height);
 			var imageText = "";
