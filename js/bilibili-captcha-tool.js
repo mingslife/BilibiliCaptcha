@@ -9,6 +9,8 @@
 
 	// 初始化
 	var init = function() {
+		console.info("%cBilibili Captcha Tool by Ming", "font-size:30px;color:#09f;")
+
 		if ($ == undefined) {
 			console.error("插件需要jQuery");
 			clearTimeout(timer);
@@ -19,6 +21,8 @@
 		scriptElement.src = SCRIPT_ADDRESS;
 		scriptElement.onload = function() {
 			isInit = true;
+
+			console.info("初始化完成");
 		};
 		document.body.appendChild(scriptElement);
 	};
