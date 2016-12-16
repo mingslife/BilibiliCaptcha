@@ -154,6 +154,7 @@
 	})();
 
 	var SCAN_TIME = 1000; // 检测间隔时间
+	var SLEEP_TIME = 3000; // 领取瓜子后的休眠时间
 
 	var isInit = false;
 	var lock = false;
@@ -180,7 +181,7 @@
 		lock = true;
 
 		// 打开宝箱
-		$(".treasure-box-ctnr .treasure-box").click();
+		if (!$(".box-panel.live-popup-panel").is(":visible")) $(".treasure-box-ctnr .treasure-box").click();
 
 		var captchaImg = $(".captcha-img");
 		var bilibiliCaptcha = BilibiliCaptcha(captchaImg[0]);
@@ -191,7 +192,9 @@
 			$('[placeholder="小学算数"]').val(compute);
 			$("button.get-award-btn").click();
 
-			lock = false;
+			setTimeout(function() {
+				lock = false;
+			}, SLEEP_TIME);
 		});
 	};
 
