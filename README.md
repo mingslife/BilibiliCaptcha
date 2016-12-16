@@ -28,6 +28,6 @@ document.body.append(ele);
 ```
 
 或者直接输入（需要jQuery）：
-```JavaScipt
+```JavaScript
 $('body').append('<script src="https://mingslife.github.io/bilibili-captcha/js/bilibili-captcha-tool-full.min.js"></script>');
 ```
