@@ -1,21 +1,23 @@
 (function(window) {
+	"use strict";
+
 	var WIDTH = 120;
 	var HEIGHT = 40;
 
 	var CHARACTER_INDEXS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "+", "-"];
 	var CHARACTERS = [
-		0x81c000008fc00000ffffffffffffffffffffffffffffffffffffffff,
-		0xbfe0000fffe0003fffe000ffffe001ffffe007fff8001ffff8003feff800ff8ff801ff0ff807fc0ff81ff00fffffe00fffff800fffff000ffffc000fbff8000f,
-		0xbfe003feffe003ffffe003ffffe003ffffe003fff800000ff803800ff803800ff807c00ff80fe00ff81ff00ffffffffffffefffffffc7ffffffc7fffbff83ffe,
-		0x800007c080003fc08001ffc0800fffc0807fffc081ffffc08ffff3c0ffff83c0fffc03c0ffe003c0ff07fffff807ffffc007ffff8007ffff8007ffff800003c0800003c0,
-		0xffff03feffff03ffffff03ffffff03ffffff03fff80f000ff80f000ff80f000ff80f000ff80f000ff80f000ff80ffffff80ffffff80ffffff80ffffff807fffe,
-		0xbffffffefffffffffffffffffffffffffffffffff803c00ff803c00ff803c00ff803c00ff803c00ff803c00fffc3ffffffc3ffffffc3ffffffc3ffffbfc1fffe,
-		0xff800000ff800000ff800000ff800000ff800007f800007ff80003fff8003ffff803fffff83ffffefbffffe0fffffe00ffffe000fffe0000ffe00000fe000000,
-		0xbff83ffefffc7ffffffefffffffffffffffffffff80fe00ff807e00ff807c00ff807c00ff807e00ff80fe00ffffffffffffffffffffefffffffc7fffbff83ffe,
-		0xbfffc1feffffe1ffffffe1ffffffe1ffffffe1fff801e00ff801e00ff801e00ff801e00ff801e00ff801e00fffffffffffffffffffffffffffffffffbffffffe,
-		0xbffffffefffffffffffffffffffffffffffffffff800000ff800000ff800000ff800000ff800000ff800000fffffffffffffffffffffffffffffffffbffffffe,
-		0x800078008000780080007800800078008000780080007800801fffe0801fffe0801fffe0801fffe0801fffe0800078008000780080007800800078008000780080007800,
-		0x80003c0080003c0080003c0080003c0080003c0080003c0080003c0080003c0080003c00
+		"81c000008fc00000ffffffffffffffffffffffffffffffffffffffff",
+		"bfe0000fffe0003fffe000ffffe001ffffe007fff8001ffff8003feff800ff8ff801ff0ff807fc0ff81ff00fffffe00fffff800fffff000ffffc000fbff8000f",
+		"bfe003feffe003ffffe003ffffe003ffffe003fff800000ff803800ff803800ff807c00ff80fe00ff81ff00ffffffffffffefffffffc7ffffffc7fffbff83ffe",
+		"800007c080003fc08001ffc0800fffc0807fffc081ffffc08ffff3c0ffff83c0fffc03c0ffe003c0ff07fffff807ffffc007ffff8007ffff8007ffff800003c0800003c0",
+		"ffff03feffff03ffffff03ffffff03ffffff03fff80f000ff80f000ff80f000ff80f000ff80f000ff80f000ff80ffffff80ffffff80ffffff80ffffff807fffe",
+		"bffffffefffffffffffffffffffffffffffffffff803c00ff803c00ff803c00ff803c00ff803c00ff803c00fffc3ffffffc3ffffffc3ffffffc3ffffbfc1fffe",
+		"ff800000ff800000ff800000ff800000ff800007f800007ff80003fff8003ffff803fffff83ffffefbffffe0fffffe00ffffe000fffe0000ffe00000fe000000",
+		"bff83ffefffc7ffffffefffffffffffffffffffff80fe00ff807e00ff807c00ff807c00ff807e00ff80fe00ffffffffffffffffffffefffffffc7fffbff83ffe",
+		"bfffc1feffffe1ffffffe1ffffffe1ffffffe1fff801e00ff801e00ff801e00ff801e00ff801e00ff801e00fffffffffffffffffffffffffffffffffbffffffe",
+		"bffffffefffffffffffffffffffffffffffffffff800000ff800000ff800000ff800000ff800000ff800000fffffffffffffffffffffffffffffffffbffffffe",
+		"800078008000780080007800800078008000780080007800801fffe0801fffe0801fffe0801fffe0801fffe0800078008000780080007800800078008000780080007800",
+		"80003c0080003c0080003c0080003c0080003c0080003c0080003c0080003c0080003c00"
 	];
 
 	var BilibiliCaptcha = function(img) {
@@ -82,7 +84,7 @@
 						if (matrix[j][i] !== -1) column += matrix[j][i];
 					}
 					// column += "\n";
-					data = parseInt("1" + column, 2).toString(16);
+					var data = parseInt("1" + column, 2).toString(16);
 
 					if (newResult) {
 						result.push(data);
@@ -97,8 +99,7 @@
 
 			var output = "";
 			for (var i = 0, length = result.length; i < length; i++) {
-				var temp = parseInt(result[i], 16);
-				switch (temp) {
+				switch (result[i]) {
 				case CHARACTERS[0]: output += CHARACTER_INDEXS[0]; break;
 				case CHARACTERS[1]: output += CHARACTER_INDEXS[1]; break;
 				case CHARACTERS[2]: output += CHARACTER_INDEXS[2]; break;
@@ -111,7 +112,7 @@
 				case CHARACTERS[9]: output += CHARACTER_INDEXS[9]; break;
 				case CHARACTERS[10]: output += CHARACTER_INDEXS[10]; break;
 				case CHARACTERS[11]: output += CHARACTER_INDEXS[11]; break;
-				default: output += test(temp);
+				default: console.info("尝试识别: " + result[i]); output += test(result[i]);
 				}
 			}
 			console.info("识别结果: " + output);
@@ -124,18 +125,30 @@
 			};
 		};
 		var count = function(result) {
-			var sum = 0;
-			var string = Number(result).toString(2);
+			var sum = 0, string = Number(result).toString(2);
 			for (var i = 0, length = string.length; i < length; i++) {
 				if (string.charAt(i) === '1') sum++;
 			}
 			return sum;
 		};
+		var hexToBin = function(number) {
+			return parseInt(number, 16).toString(2);
+		};
+		var compare = function(a, b) {
+			var score = Math.abs(a.length - b.length), minLength = Math.min(a.length, b.length);
+			for (var i = 0; i < minLength; i++) {
+				if (a.charAt(i) !== b.charAt(i)) score++;
+			}
+			return score;
+		};
 		var test = function(temp) {
+			// var temp = parseInt(result, 16);
 			var min = Number.MAX_VALUE;
 			var minIndex = -1;
+			var tempBin = hexToBin(temp);
 			for (var i = 0, length = CHARACTERS.length; i < length; i++) {
-				var result = count(CHARACTERS[i] ^ temp);
+				// var result = count(parseInt(CHARACTERS[i], 16) ^ temp);
+				var result = compare(hexToBin(CHARACTERS[i]), tempBin);
 				if (result < min) {
 					min = result;
 					minIndex = i;

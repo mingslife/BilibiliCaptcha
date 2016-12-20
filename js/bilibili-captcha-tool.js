@@ -1,4 +1,6 @@
 (function($, window) {
+	"use strict";
+
 	var SCAN_TIME = 1000; // 检测间隔时间
 	var SLEEP_TIME = 3000; // 领取瓜子后的休眠时间
 	var SCRIPT_ADDRESS = "https://mingslife.github.io/bilibili-captcha/js/bilibili-captcha.min.js"; // 验证码识别插件下载地址
@@ -54,10 +56,11 @@
 	timer = setInterval(function() {
 		if (!isInit || lock) return;
 
-		var countTiming = $('[ms-text="countTiming"]').text();
+		var countTimingElement = $('[ms-text="countTiming"]');
+		var countTiming = countTimingElement.text();
 		if (countTiming === "00:00") {
 			getAward();
-		} else if (countTiming === "--:--") {
+		} else if (countTiming === "--:--" || !countTimingElement.is(":visible")) {
 			console.info("宝箱领取完毕");
 			clearTimeout(timer);
 		}
